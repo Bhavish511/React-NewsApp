@@ -53,20 +53,19 @@ export default class New extends Component {
     return (
       <div className='container my-1'>
         <h2>NewsMonkey - Top Headlines</h2>
+        {this.state.articles.length === 0 && !this.state.loading && <h4>No articles to display</h4>}
         <div className="row">
+          {this.state.articles.map((element) => {
+          return <div className="col-md-3" key={element.url}>
+            <NewItem title={element.title} description={element.description} imageUrl={element.urlToImage} newUrl={element.url} />
+          </div> 
+        })}
+        </div>
+        {/* <div className="row">
           <div className="col-md-3">
             <NewItem title="Card title 1" description="Some quick example text to build on the card title and make up the bulk of the card's content." imageUrl="https://news24cobalt.24.co.za/resources/029c-1e88b2c17308-e684486b443e-1000/format/inline/ramaphosa_angie_and_rudzani_20250821184700.jpeg" newUrl='TODO' />
           </div>
-          <div className="col-md-3">
-            <NewItem title="Card title 2" description="Some quick example text to build on the card title and make up the bulk of the card's content." imageUrl="https://news24cobalt.24.co.za/resources/029c-1e88b2c17308-e684486b443e-1000/format/inline/ramaphosa_angie_and_rudzani_20250821184700.jpeg" newUrl='TODO' />
-          </div>
-          <div className="col-md-3">
-            <NewItem title="Card title 3" description="Some quick example text to build on the card title and make up the bulk of the card's content." imageUrl="https://news24cobalt.24.co.za/resources/029c-1e88b2c17308-e684486b443e-1000/format/inline/ramaphosa_angie_and_rudzani_20250821184700.jpeg" newUrl='TODO' />
-          </div>
-          <div className="col-md-3">
-            <NewItem title="Card title 4" description="Some quick example text to build on the card title and make up the bulk of the card's content." imageUrl="https://news24cobalt.24.co.za/resources/029c-1e88b2c17308-e684486b443e-1000/format/inline/ramaphosa_angie_and_rudzani_20250821184700.jpeg" newUrl='TODO' />
-          </div>
-        </div>
+        </div> */}
       </div>
     )
   }

@@ -10,9 +10,9 @@ export default class NewItem extends Component {
           <div className="card" style={{ width: "18rem" }}>
             <img src={imageUrl} className="card-img-top" alt="..." />
             <div className="card-body">
-              <h5 className="card-title">{title}</h5>
-              <p className="card-text">{description}</p>
-              <a href={`/newdetail/${newUrl}`} className="btn btn-primary">Read More</a>
+              <h5 className="card-title">{title.slice(0, 45)}...</h5>
+              <p className="card-text">{description.slice(0, 88)}...</p>
+              <a href={newUrl} target='_blank' className="btn btn-primary" rel="noreferrer">Read More</a>
             </div>
           </div>
       </div>
