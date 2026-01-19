@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import NewItem from './NewItem';
 import Spinner from './spinner';
+import PropTypes from 'prop-types';
 export default class New extends Component {
-  // articles = [
+// articles = [
   //   {
   //     "source": {
   //       "id": "news24",
@@ -43,6 +44,17 @@ export default class New extends Component {
   //     "content": "Zach Bolinger/Icon Sportswire via Getty Images\r\nSpeaking of Iowa...\r\nWhat makes the Hawkeyes' stellar defensive season even more impressive is how much the team desperately needed it.\r\nAmong the many… [+711 chars]"
   //   }
   // ];
+  static defaultProps = {
+    country: 'us',
+    pageSize: 5,
+    category: 'general'
+  }
+  static propTypes = {
+    country: PropTypes.string,
+    pageSize: PropTypes.number,
+    category: PropTypes
+  }
+
   constructor() {
     super();
     this.state = {
@@ -53,7 +65,7 @@ export default class New extends Component {
   }
   async componentDidMount() {
     this.setState({ loading: true });
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&apiKey=81256b8df25d454c9a53edbc7e8da2bb&page=1&pageSize=${this.props.pageSize}`;
+    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=81256b8df25d454c9a53edbc7e8da2bb&page=1&pageSize=${this.props.pageSize}`;
     let data = await fetch(url);
     let parsedData = await data.json();
     this.setState({ articles: parsedData.articles, totalResults: parsedData.totalResults, loading: false });
@@ -61,7 +73,7 @@ export default class New extends Component {
   // handle both previous and next button with a single function
   handleClick = async (direction) => {
     this.setState({ loading: true });
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&apiKey=81256b8df25d454c9a53edbc7e8da2bb&page=${this.state.page + (direction === 'next' ? 1 : -1)}&pageSize=${this.props.pageSize}`;
+    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=81256b8df25d454c9a53edbc7e8da2bb&page=${this.state.page + (direction === 'next' ? 1 : -1)}&pageSize=${this.props.pageSize}`;
     let data = await fetch(url);
     let parsedData = await data.json(); 
     this.setState({
@@ -73,7 +85,7 @@ export default class New extends Component {
   render() {
     return (
       <div className='container my-1'>
-        <h1 className="text-center">NewsMonkey - Top Headlines</h1>
+        <h1 className="text-center" style={{margin: '35px 0'}}>NewsMonkey - Top Headlines</h1>
         {this.state.loading && <Spinner />}
         {this.state.articles.length === 0 && !this.state.loading && <h4>No articles to display</h4>}
         <div className="row">
@@ -90,7 +102,7 @@ export default class New extends Component {
 
         {/* <div className="container">
           <button disabled={this.state.page <=1} type="button" className="btn btn-dark" onClick={async () => {
-            let url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=81256b8df25d454c9a53edbc7e8da2bb&page=${this.state.page - 1}&pageSize=20`;
+            let url = `https://newsapi.org/v2/top-headlines?country=us&category=${this.props.category}&apiKey=81256b8df25d454c9a53edbc7e8da2bb&page=${this.state.page - 1}&pageSize=20`;
             let data = await fetch(url);
             let parsedData = await data.json();
             this.setState({
@@ -99,7 +111,7 @@ export default class New extends Component {
             })
           }}> &larr; Previous</button>
           <button type="button" className="btn btn-dark mx-3" onClick={async () => {
-            let url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=81256b8df25d454c9a53edbc7e8da2bb&page=${this.state.page + 1}&pageSize=20`;
+            let url = `https://newsapi.org/v2/top-headlines?country=us&category=${this.props.category}&apiKey=81256b8df25d454c9a53edbc7e8da2bb&page=${this.state.page + 1}&pageSize=20`;
             let data = await fetch(url);
             let parsedData = await data.json();
             this.setState({
