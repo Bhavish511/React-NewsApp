@@ -47,12 +47,16 @@ export default class New extends Component {
   static defaultProps = {
     country: 'us',
     pageSize: 5,
-    category: 'general'
+    category: 'general',
+    author: 'Unknown',
+    date: new Date().toISOString().slice(0, 10),
   }
   static propTypes = {
     country: PropTypes.string,
     pageSize: PropTypes.number,
-    category: PropTypes
+    category: PropTypes.string,
+    author: PropTypes.string,
+    date: PropTypes.string
   }
 
   constructor() {
@@ -92,7 +96,9 @@ export default class New extends Component {
           {!this.state.loading && this.state.articles.map((element) => {
           
           return <div className="col-md-3" key={element.url}>
-            <NewItem title={`${element.title?.slice(0, 45)}...` ? element.title?.slice(0, 45) : "No title"} description={`${element.description?.slice(0, 88)}...` ? element.description?.slice(0, 88) : "No description"} imageUrl={element.urlToImage ? element.urlToImage : "https://platform.theverge.com/wp-content/uploads/sites/2/2025/12/258218_Sony_Bravia_8_II_TV_JHiggins_0009.jpg?quality=90&strip=all&crop=0%2C0%2C100%2C100&w=828"} newUrl={element.url} />
+            <NewItem title={`${element.title?.slice(0, 45)}...` ? element.title?.slice(0, 45) : "No title"} description={`${element.description?.slice(0, 88)}...` ? element.description?.slice(0, 88) : "No description"} 
+            imageUrl={element.urlToImage ? element.urlToImage : "https://platform.theverge.com/wp-content/uploads/sites/2/2025/12/258218_Sony_Bravia_8_II_TV_JHiggins_0009.jpg?quality=90&strip=all&crop=0%2C0%2C100%2C100&w=828"} newUrl={element.url}
+            author={element.author} date={element.publishedAt} source={element.source.name} />
           </div> 
         })}
         <div className="d-flex justify-content-between">
