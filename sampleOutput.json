@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
-import NewItem from './NewItem';
-export default class New extends Component {
-  articles = [
+{
+  "status": "ok",
+  "totalResults": 3,
+  "articles": [
     {
       "source": {
         "id": "news24",
@@ -41,33 +41,5 @@ export default class New extends Component {
       "publishedAt": "2023-12-12T12:00:00Z",
       "content": "Zach Bolinger/Icon Sportswire via Getty Images\r\nSpeaking of Iowa...\r\nWhat makes the Hawkeyes' stellar defensive season even more impressive is how much the team desperately needed it.\r\nAmong the many… [+711 chars]"
     }
-  ];
-  constructor() {
-    super();
-    this.state = {
-      articles: this.articles,
-      loading: false
-    }
-  }
-  render() {
-    return (
-      <div className='container my-1'>
-        <h2>NewsMonkey - Top Headlines</h2>
-        <div className="row">
-          <div className="col-md-3">
-            <NewItem title="Card title 1" description="Some quick example text to build on the card title and make up the bulk of the card's content." imageUrl="https://news24cobalt.24.co.za/resources/029c-1e88b2c17308-e684486b443e-1000/format/inline/ramaphosa_angie_and_rudzani_20250821184700.jpeg" newUrl='TODO' />
-          </div>
-          <div className="col-md-3">
-            <NewItem title="Card title 2" description="Some quick example text to build on the card title and make up the bulk of the card's content." imageUrl="https://news24cobalt.24.co.za/resources/029c-1e88b2c17308-e684486b443e-1000/format/inline/ramaphosa_angie_and_rudzani_20250821184700.jpeg" newUrl='TODO' />
-          </div>
-          <div className="col-md-3">
-            <NewItem title="Card title 3" description="Some quick example text to build on the card title and make up the bulk of the card's content." imageUrl="https://news24cobalt.24.co.za/resources/029c-1e88b2c17308-e684486b443e-1000/format/inline/ramaphosa_angie_and_rudzani_20250821184700.jpeg" newUrl='TODO' />
-          </div>
-          <div className="col-md-3">
-            <NewItem title="Card title 4" description="Some quick example text to build on the card title and make up the bulk of the card's content." imageUrl="https://news24cobalt.24.co.za/resources/029c-1e88b2c17308-e684486b443e-1000/format/inline/ramaphosa_angie_and_rudzani_20250821184700.jpeg" newUrl='TODO' />
-          </div>
-        </div>
-      </div>
-    )
-  }
+  ]
 }
