@@ -1,10 +1,6 @@
-import React, { Component } from 'react'
-export default class NewItem extends Component {
-  // constructor(props) {
-  //   super(props);
-  // };
-  render() {
-    let {title, description, imageUrl,newUrl, author, date,source} = this.props;
+import React from 'react'
+const NewItem = (props) => {
+    let {title, description, imageUrl, newUrl, author, date, source} = props;
     return (
       <div className="my-3">
           <div className="card">
@@ -21,5 +17,5 @@ export default class NewItem extends Component {
           </div>
       </div>
     )
-  }
 }
+export default NewItem;

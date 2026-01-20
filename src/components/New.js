@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
+import React, { useEffect, useState } from 'react'
 import NewItem from './NewItem';
 import Spinner from './spinner';
 import PropTypes from 'prop-types';
 import InfiniteScroll from 'react-infinite-scroll-component';
-export default class New extends Component {
+const New = (props) => {
 // articles = [
   //   {
   //     "source": {
@@ -45,76 +45,55 @@ export default class New extends Component {
   //     "content": "Zach Bolinger/Icon Sportswire via Getty Images\r\nSpeaking of Iowa...\r\nWhat makes the Hawkeyes' stellar defensive season even more impressive is how much the team desperately needed it.\r\nAmong the many… [+711 chars]"
   //   }
   // ];
-  static defaultProps = {
-    country: 'us',
-    pageSize: 5,
-    category: 'general',
-    author: 'Unknown',
-    date: new Date().toISOString().slice(0, 10),
-  }
-  static propTypes = {
-    country: PropTypes.string,
-    pageSize: PropTypes.number,
-    category: PropTypes.string,
-    author: PropTypes.string,
-    date: PropTypes.string
-  }
+  const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [totalResults, setTotalResults] = useState(0);
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      articles: [],
-      loading: true,
-      page: 1,
-      totalResults: 0
+  
+    const UpdateNews = async () => {
+      props.setprogress(10);
+      let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=1&pageSize=${props.pageSize}`;
+      setLoading(true);
+      let data = await fetch(url);
+      props.setprogress(30);
+      let parsedData = await data.json();
+      props.setprogress(70);
+      setArticles(parsedData.articles);
+      setTotalResults(parsedData.totalResults);
+      setLoading(false);
+      props.setprogress(100);
     }
-    document.title = `NewsMonkey - ${this.props.category.charAt(0).toUpperCase() + this.props.category.slice(1)}`;
-  }
-  async componentDidMount() {
-    // this.setState({ loading: true });
-    this.props.setprogress(10);
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&page=1&pageSize=${this.props.pageSize}`;
-    let data = await fetch(url);
-    this.props.setprogress(30);
-    let parsedData = await data.json();
-    this.props.setprogress(70);
-    this.setState({ articles: parsedData.articles, totalResults: parsedData.totalResults, loading: false });
-    this.props.setprogress(100);
-  }
-  // handle both previous and next button with a single function
-  handleClick = async (direction) => {
-    this.props.setprogress(10);
-    // this.setState({ loading: true });
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&page=${this.state.page + (direction === 'next' ? 1 : -1)}&pageSize=${this.props.pageSize}`;
-    let data = await fetch(url);
-    this.props.setprogress(30);
-    let parsedData = await data.json(); 
-    this.props.setprogress(70);
-    this.setState({
-      page: this.state.page + (direction === 'next' ? 1 : -1),
-      articles: parsedData.articles,
-      loading: false
-    });
-    this.props.setprogress(100);
-  }
-  fetchMoreData = async () => {
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&page=${this.state.page + 1}&pageSize=${this.props.pageSize}`;
+    useEffect(() => {
+      document.title = `NewsMonkey - ${props.category.charAt(0).toUpperCase() + props.category.slice(1)}`;
+      UpdateNews();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[]);
+  //   let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page + (direction === 'next' ? 1 : -1)}&pageSize=${props.pageSize}`;
+  //   let data = await fetch(url);
+  //   props.setprogress(30);
+  //   let parsedData = await data.json(); 
+  //   props.setprogress(70);
+  //   setPage(page + (direction === 'next' ? 1 : -1));
+  //   setArticles(parsedData.articles);
+  //   setLoading(false);
+  //   props.setprogress(100);
+  // }
+  const fetchMoreData = async () => {
+    let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page + 1}&pageSize=${props.pageSize}`;
     let data = await fetch(url);
     let parsedData = await data.json();
-    this.setState({
-      page: this.state.page + 1,
-      articles: this.state.articles.concat(parsedData.articles),
-      totalResults: parsedData.totalResults
-    });
+    setPage(page + 1);
+    setArticles(articles.concat(parsedData.articles));
+    setTotalResults(parsedData.totalResults);
   }
-  render() {
     return (
       <>
-        <h1 className="text-center" style={{margin: '35px 0'}}>NewsMonkey - Top {this.props.category.charAt(0).toUpperCase() + this.props.category.slice(1)} Headlines</h1>
-        {/* {this.state.loading && <Spinner />} */}
-          {/* {this.state.articles.length === 0 && !this.state.loading && <h4>No articles to display</h4>}
+        <h1 className="text-center" style={{margin: '35px 0', marginTop: '90px'}}>NewsMonkey - Top {props.category.charAt(0).toUpperCase() + props.category.slice(1)} Headlines</h1>
+        {/* {loading && <Spinner />} */}
+          {/* {articles.length === 0 && !loading && <h4>No articles to display</h4>}
           <div className="row">
-            {!this.state.loading && this.state.articles.map((element) => {
+            {!loading && articles.map((element) => {
             
             return <div className="col-md-3" key={element.url}>
               <NewItem title={`${element.title?.slice(0, 45)}...` ? element.title?.slice(0, 45) : "No title"} description={`${element.description?.slice(0, 88)}...` ? element.description?.slice(0, 88) : "No description"} 
@@ -122,19 +101,18 @@ export default class New extends Component {
               author={element.author} date={element.publishedAt} source={element.source.name} />
             </div> 
           })} */}
-        {this.state.articles.length === 0 && !this.state.loading && <h4>No articles to display</h4>}
-        {this.state.loading && <Spinner />}
+        {articles.length === 0 && !loading && <h4>No articles to display</h4>}
+        {loading && <Spinner />}
         <InfiniteScroll
-          dataLength={this.state.articles.length}
-          next={this.fetchMoreData}
-          hasMore={this.state.articles.length !== this.state.totalResults}
+          dataLength={articles.length}
+          next={fetchMoreData}
+          hasMore={articles.length !== totalResults}
           // loader={<Spinner />}
-          loader={this.state.totalResults !== this.state.articles.length && this.state && <Spinner />}
+          loader={totalResults !== articles.length && <Spinner />}
         >
           <div className="container">
             <div className="row">
-              {this.state.articles.map((element) => {
-              
+              {articles.map((element) => {
               return <div className="col-md-3" key={element.url}>
                 <NewItem title={`${element.title?.slice(0, 45)}...` ? element.title?.slice(0, 45) : "No title"} description={`${element.description?.slice(0, 88)}...` ? element.description?.slice(0, 88) : "No description"} 
                 imageUrl={element.urlToImage ? element.urlToImage : "https://platform.theverge.com/wp-content/uploads/sites/2/2025/12/258218_Sony_Bravia_8_II_TV_JHiggins_0009.jpg?quality=90&strip=all&crop=0%2C0%2C100%2C100&w=828"} newUrl={element.url}
@@ -145,27 +123,23 @@ export default class New extends Component {
             </div>
             </InfiniteScroll>
         {/* <div className="d-flex justify-content-between">
-          <button disabled={this.state.page <=1} type="button" className="btn btn-dark" onClick={() => this.handleClick('prev')}>&larr; Previous</button>
-          <button disabled={this.state.page >= Math.ceil(this.state.totalResults / this.props.pageSize)} type="button" className="btn btn-dark" onClick={() => this.handleClick('next')}>Next &rarr;</button>
+          <button disabled={page <=1} type="button" className="btn btn-dark" onClick={() => handleClick('prev')}>&larr; Previous</button>
+          <button disabled={page >= Math.ceil(totalResults / props.pageSize)} type="button" className="btn btn-dark" onClick={() => handleClick('next')}>Next &rarr;</button>
         </div> */}
 
         {/* <div className="container">
-          <button disabled={this.state.page <=1} type="button" className="btn btn-dark" onClick={async () => {
-            let url = `https://newsapi.org/v2/top-headlines?country=us&category=${this.props.category}&apiKey=${this.props.apiKey}&page=${this.state.page - 1}&pageSize=20`;
+          <button disabled={page <=1} type="button" className="btn btn-dark" onClick={async () => {
+            let url = `https://newsapi.org/v2/top-headlines?country=us&category=${props.category}&apiKey=${props.apiKey}&page=${page - 1}&pageSize=20`;
             let data = await fetch(url);
             let parsedData = await data.json();
-            this.setState({
-              page: this.state.page - 1,
-              articles: parsedData.articles
-            })
+            setTotalResults(parsedData.totalResults);
+            setArticles(parsedData.articles);
           }}> &larr; Previous</button>
           <button type="button" className="btn btn-dark mx-3" onClick={async () => {
-            let url = `https://newsapi.org/v2/top-headlines?country=us&category=${this.props.category}&apiKey=${this.props.apiKey}&page=${this.state.page + 1}&pageSize=20`;
+            let url = `https://newsapi.org/v2/top-headlines?country=us&category=${props.category}&apiKey=${props.apiKey}&page=${page + 1}&pageSize=20`;
             let data = await fetch(url);
             let parsedData = await data.json();
-            this.setState({
-              page: this.state.page + 1,
-              articles: parsedData.articles
+            setArticles(parsedData.articles);
             })
           }}>Next &rarr;</button>  */}
         {/* </div> */}
@@ -177,5 +151,21 @@ export default class New extends Component {
         </div> */}
       </>
     )
-  }
 }
+
+export default New;
+
+New.defaultProps = {
+    country: 'us',
+    pageSize: 5,
+    category: 'general',
+    author: 'Unknown',
+    date: new Date().toISOString().slice(0, 10),
+};
+New.propTypes = {
+    country: PropTypes.string,
+    pageSize: PropTypes.number,
+    category: PropTypes.string,
+    author: PropTypes.string,
+    date: PropTypes.string
+};
