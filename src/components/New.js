@@ -64,14 +64,14 @@ export default class New extends Component {
     super(props);
     this.state = {
       articles: [],
-      loading: false,
+      loading: true,
       page: 1,
       totalResults: 0
     }
     document.title = `NewsMonkey - ${this.props.category.charAt(0).toUpperCase() + this.props.category.slice(1)}`;
   }
   async componentDidMount() {
-    this.setState({ loading: true });
+    // this.setState({ loading: true });
     let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=81256b8df25d454c9a53edbc7e8da2bb&page=1&pageSize=${this.props.pageSize}`;
     let data = await fetch(url);
     let parsedData = await data.json();
@@ -115,6 +115,7 @@ export default class New extends Component {
             </div> 
           })} */}
         {this.state.articles.length === 0 && !this.state.loading && <h4>No articles to display</h4>}
+        {this.state.loading && <Spinner />}
         <InfiniteScroll
           dataLength={this.state.articles.length}
           next={this.fetchMoreData}
