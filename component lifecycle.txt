@@ -1,22 +1,45 @@
-React Component Lifecycle;
+# React Component Lifecycle
 
-The series of events that happen from the mounting of a react Component,
-to it's Unmounting.
+The lifecycle of a component consists of the series of events that happen from its mounting (creation) to its unmounting (destruction).
 
-1---> Mounting--> Birth of your Component.
-2---> Upate-----> Growth of your Component.
-3---> Unmount---> Death of your Component.
+## Phases Detailed
 
+1.  **Mounting**: The birth of your component.
+2.  **Updating**: The growth of your component.
+3.  **Unmounting**: The death of your component.
 
-Methods in React Component Lifecycle;
+**Note on Phases:**
+*   **Render Phase**: Pure and has no side effects. React may pause, abort, or restart work here. (Includes `render`, `shouldComponentUpdate`).
+*   **Commit Phase**: Can work with DOM, run side effects, schedule updates. (Includes `componentDidMount`, `componentDidUpdate`, `componentWillUnmount`).
 
- * The render() method is used to render HTML of the Component in react. This method is required for a classed based Component to render the DOM. It runs during the mounting and updating of your Component. 
-    render() method should be pure i.e. you can't modify state inside it!.
- 
- * The ComponentDidMount() method runs after the Component output has been rendered to the DOM.
- 
- * The ComponentDidUpdate() method is invoked as soon as the updating happens.
-    The most common use case for the ComponentDidUpdate() method is updating the DOM in response to prop or state changes.
+## Lifecycle Methods
 
- * The ComponentWillUnmount() Lifecycle method is called just before the Component is Unmounted and destroyed.
-    Usually used to perform cleanups.
+### render()
+*   **Phase**: Mounting, Updating
+*   **Description**: The only required method in a class component. It examines `this.props` and `this.state` and returns React elements.
+*   **Note**: `render()` should be pure, meaning it does not modify component state, returns the same result each time it’s invoked, and does not directly interact with the browser.
+
+### componentDidMount()
+*   **Phase**: Mounting
+*   **Description**: Invoked immediately after a component is mounted (inserted into the tree).
+*   **Usage**: Perfect for making API calls, setting up subscriptions, or initializing state that requires DOM nodes.
+
+### componentDidUpdate(prevProps, prevState)
+*   **Phase**: Updating
+*   **Description**: Invoked immediately after updating occurs. This method is not called for the initial render.
+*   **Usage**: Good for operating on the DOM when the component has been updated. Also useful for making network requests as long as you compare the current props to previous props to avoid infinite loops.
+
+### componentWillUnmount()
+*   **Phase**: Unmounting
+*   **Description**: called immediately before a component is unmounted and destroyed.
+*   **Usage**: Used for cleanup tasks like invalidating timers, canceling network requests, or cleaning up subscriptions created in `componentDidMount`.
+
+## Rarely Used Methods
+*   **shouldComponentUpdate(nextProps, nextState)**: Optimization to let React know if the component’s output is not affected by current changes.
+*   **static getDerivedStateFromProps(props, state)**: Invoke right before calling the render method, both on the initial mount and on subsequent updates.
+*   **getSnapshotBeforeUpdate(prevProps, prevState)**: Invoked right before the most recently rendered output is committed to the DOM.
+
+## Error Boundaries
+Error boundaries are React components that catch JavaScript errors anywhere in their child component tree, log those errors, and display a fallback UI instead of the component tree that crashed.
+*   **static getDerivedStateFromError(error)**: Render a fallback UI after an error has been thrown.
+*   **componentDidCatch(error, info)**: Log error information.
