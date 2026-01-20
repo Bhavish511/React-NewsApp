@@ -73,7 +73,7 @@ export default class New extends Component {
   async componentDidMount() {
     // this.setState({ loading: true });
     this.props.setprogress(10);
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=81256b8df25d454c9a53edbc7e8da2bb&page=1&pageSize=${this.props.pageSize}`;
+    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&page=1&pageSize=${this.props.pageSize}`;
     let data = await fetch(url);
     this.props.setprogress(30);
     let parsedData = await data.json();
@@ -85,7 +85,7 @@ export default class New extends Component {
   handleClick = async (direction) => {
     this.props.setprogress(10);
     // this.setState({ loading: true });
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=81256b8df25d454c9a53edbc7e8da2bb&page=${this.state.page + (direction === 'next' ? 1 : -1)}&pageSize=${this.props.pageSize}`;
+    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&page=${this.state.page + (direction === 'next' ? 1 : -1)}&pageSize=${this.props.pageSize}`;
     let data = await fetch(url);
     this.props.setprogress(30);
     let parsedData = await data.json(); 
@@ -98,7 +98,7 @@ export default class New extends Component {
     this.props.setprogress(100);
   }
   fetchMoreData = async () => {
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=81256b8df25d454c9a53edbc7e8da2bb&page=${this.state.page + 1}&pageSize=${this.props.pageSize}`;
+    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&page=${this.state.page + 1}&pageSize=${this.props.pageSize}`;
     let data = await fetch(url);
     let parsedData = await data.json();
     this.setState({
@@ -151,7 +151,7 @@ export default class New extends Component {
 
         {/* <div className="container">
           <button disabled={this.state.page <=1} type="button" className="btn btn-dark" onClick={async () => {
-            let url = `https://newsapi.org/v2/top-headlines?country=us&category=${this.props.category}&apiKey=81256b8df25d454c9a53edbc7e8da2bb&page=${this.state.page - 1}&pageSize=20`;
+            let url = `https://newsapi.org/v2/top-headlines?country=us&category=${this.props.category}&apiKey=${this.props.apiKey}&page=${this.state.page - 1}&pageSize=20`;
             let data = await fetch(url);
             let parsedData = await data.json();
             this.setState({
@@ -160,7 +160,7 @@ export default class New extends Component {
             })
           }}> &larr; Previous</button>
           <button type="button" className="btn btn-dark mx-3" onClick={async () => {
-            let url = `https://newsapi.org/v2/top-headlines?country=us&category=${this.props.category}&apiKey=81256b8df25d454c9a53edbc7e8da2bb&page=${this.state.page + 1}&pageSize=20`;
+            let url = `https://newsapi.org/v2/top-headlines?country=us&category=${this.props.category}&apiKey=${this.props.apiKey}&page=${this.state.page + 1}&pageSize=20`;
             let data = await fetch(url);
             let parsedData = await data.json();
             this.setState({
