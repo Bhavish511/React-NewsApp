@@ -72,22 +72,30 @@ export default class New extends Component {
   }
   async componentDidMount() {
     // this.setState({ loading: true });
+    this.props.setprogress(10);
     let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=81256b8df25d454c9a53edbc7e8da2bb&page=1&pageSize=${this.props.pageSize}`;
     let data = await fetch(url);
+    this.props.setprogress(30);
     let parsedData = await data.json();
+    this.props.setprogress(70);
     this.setState({ articles: parsedData.articles, totalResults: parsedData.totalResults, loading: false });
+    this.props.setprogress(100);
   }
   // handle both previous and next button with a single function
   handleClick = async (direction) => {
-    this.setState({ loading: true });
+    this.props.setprogress(10);
+    // this.setState({ loading: true });
     let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=81256b8df25d454c9a53edbc7e8da2bb&page=${this.state.page + (direction === 'next' ? 1 : -1)}&pageSize=${this.props.pageSize}`;
     let data = await fetch(url);
+    this.props.setprogress(30);
     let parsedData = await data.json(); 
+    this.props.setprogress(70);
     this.setState({
       page: this.state.page + (direction === 'next' ? 1 : -1),
       articles: parsedData.articles,
       loading: false
     });
+    this.props.setprogress(100);
   }
   fetchMoreData = async () => {
     let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=81256b8df25d454c9a53edbc7e8da2bb&page=${this.state.page + 1}&pageSize=${this.props.pageSize}`;
@@ -120,8 +128,8 @@ export default class New extends Component {
           dataLength={this.state.articles.length}
           next={this.fetchMoreData}
           hasMore={this.state.articles.length !== this.state.totalResults}
-          loader={<Spinner />}
-          // loader={this.state.loading && <Spinner />}
+          // loader={<Spinner />}
+          loader={this.state.totalResults !== this.state.articles.length && this.state && <Spinner />}
         >
           <div className="container">
             <div className="row">
