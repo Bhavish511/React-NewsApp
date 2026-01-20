@@ -4,7 +4,13 @@
 ![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)
 ![React Version](https://img.shields.io/badge/react-v18.0.0-blue.svg)
 
-A modern news application built with React that fetches real-time news data. It features infinite scrolling, category-based filtering, and a smooth user interface.
+A modern news application built with React that fetches real-time news data. 
+
+**This repository contains two implementations of the project:**
+1.  **Class-Based Components**
+2.  **Function-Based Components (Hooks)**
+
+It features infinite scrolling, category-based filtering, and a smooth user interface.
 
 ## Features
 
@@ -14,9 +20,26 @@ A modern news application built with React that fetches real-time news data. It 
 - **Loading Bar**: Visual feedback during data fetching with `react-top-loading-bar`.
 - **Responsive Design**: Optimized for different screen sizes.
 
+## Available Versions (Branches)
+
+You can explore different implementations by switching branches:
+
+| Implementation Type | Branch Name | Description |
+| :--- | :--- | :--- |
+| **Class-Based** | `NewApp-ClassBased-Component` | Original implementation using React Class Components. |
+| **Function-Based** | `main` | Refactored implementation using React Hooks (useState, useEffect, useContext). |
+
+To switch to a specific version, run:
+
+```bash
+git checkout <branch-name>
+# Example:
+# git checkout NewApp-ClassBased-Component
+```
+
 ## tech Stack
 
-- **React**: Frontend library for building the user interface.
+- **React**: Frontend library for building the user interface (Functional Components & Hooks).
 - **React Router**: For client-side routing and navigation.
 - **Bootstrap**: For styling and responsive layout.
 - **News API**: Source of news data (requires API key).
