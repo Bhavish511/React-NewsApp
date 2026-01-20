@@ -1,17 +1,69 @@
-What is React Hooks;
+# What are React Hooks?
 
- * Features of class based components in function based components
- * It allows you to use state and other React Features without writing a class.
- * Hooks are the functions which "hook into" React state and lifestyle Feature from 
-    function components.
+Hooks are functions that let you "hook into" React state and lifecycle features from function components. They allow you to use state and other React features without writing a class.
 
-Commonly used React Hooks:
+**Key Benefits:**
+*   Use state and lifecycle features in functional components.
+*   Reuse stateful logic between components without changing your component hierarchy.
 
- 1 --> useState
-    --> Initial state and initial values set, use to update state
+## Rules of Hooks
+1.  **Only Call Hooks at the Top Level**: Don’t call Hooks inside loops, conditions, or nested functions.
+2.  **Only Call Hooks from React Functions**: Call Hooks from React function components or custom Hooks, not from regular JavaScript functions.
 
- 2 --> useEffect
-    --> use to perform side-effects componentDidmount -> API Calls and etc..
- 3 --> useContext
- 4 --> useRef
+## Commonly Used React Hooks
 
+### 1. useState
+*   **Purpose**: Allows you to add state to functional components.
+*   **Usage**: Returns a stateful value and a function to update it.
+    ```javascript
+    const [count, setCount] = useState(0);
+    ```
+
+### 2. useEffect
+*   **Purpose**: Lets you perform side effects in function components.
+*   **Usage**: Similar to `componentDidMount`, `componentDidUpdate`, and `componentWillUnmount` in classes. Used for data fetching, subscriptions, or manually changing the DOM.
+    ```javascript
+    useEffect(() => {
+      // code to run on effect
+      return () => {
+        // cleanup code (optional)
+      };
+    }, [dependencies]);
+    ```
+
+### 3. useContext
+*   **Purpose**: Accepts a context object and returns the current context value for that context.
+*   **Usage**: Makes it easy to pass data through the component tree without having to manually pass props down through every level.
+
+### 4. useRef
+*   **Purpose**: Returns a mutable ref object whose `.current` property is initialized to the passed argument.
+*   **Usage**: Useful for accessing DOM elements directly or persisting values across renders without causing re-renders.
+
+## Additional Hooks
+
+### 5. useReducer
+*   **Purpose**: An alternative to `useState` for complex state logic.
+*   **Usage**: Accepts a reducer of type `(state, action) => newState` and returns the current state paired with a `dispatch` method.
+    ```javascript
+    const [state, dispatch] = useReducer(reducer, initialArg, init);
+    ```
+
+### 6. useMemo
+*   **Purpose**: Memoizes a value.
+*   **Usage**: Returns a memoized value that only changes when one of the dependencies has changed. Useful for optimizing expensive calculations.
+    ```javascript
+    const memoizedValue = useMemo(() => computeExpensiveValue(a, b), [a, b]);
+    ```
+
+### 7. useCallback
+*   **Purpose**: Memoizes a callback function.
+*   **Usage**: Returns a memoized version of the callback that only changes if one of the dependencies has changed. Useful for passing callbacks to optimized child components that rely on reference equality.
+    ```javascript
+    const memoizedCallback = useCallback(() => {
+      doSomething(a, b);
+    }, [a, b]);
+    ```
+
+## Custom Hooks
+*   **Concept**: You can build your own Hooks! A custom Hook is a JavaScript function whose name starts with "use" and calls other Hooks.
+*   **Benefit**: Allows you to extract component logic into reusable functions.
